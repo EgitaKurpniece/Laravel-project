@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\UpdateClientRequest;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -20,16 +22,17 @@ class ClientController extends Controller
         return view('clients.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreClientRequest $storeClientRequest)
     {
-        $requestData = $request->all();
+        $validatedData = $storeClientRequest->validated();
 
         $client = new Client([
-            'name' => $requestData['name'],
-            'surname' => $requestData['surname'],
-            'email' => $requestData['email'],
-            'address' => $requestData['address'],
+        'name' => $validatedData['name'],
+        'surname' => $validatedData['surname'],
+        'email' => $validatedData['email'],
+        'address' => $validatedData['address'],
         ]);
+
         $client->save();
         // $client->name = $requestData['name'];
         // $client->surname = $requestData['surname'];
@@ -54,14 +57,14 @@ class ClientController extends Controller
         ]);
     }
 
-    public function update(Request $request, Client $client)
+    public function update(UpdateClientRequest $updateClientRequest, Client $client)
     {
-        $requestData = $request->all();
+        $validatedData = $updateClientRequest->validated();
 
-        $client->name = $requestData['name'];
-        $client->surname = $requestData['surname'];
-        $client->email = $requestData['email'];
-        $client->address = $requestData['address'];
+        $client->name = $validatedData['name'];
+        $client->surname = $validatedData['surname'];
+        $client->email = $validatedData['email'];
+        $client->address = $validatedData['address'];
         $client->save();
     
         return redirect()->route('clients.show', ['client' => $client]);

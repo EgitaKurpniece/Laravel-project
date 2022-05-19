@@ -1,15 +1,41 @@
-show client
+<h1>Client</h1><br>
+<p>{{ $client->id }}</p>
+<h3>{{ $client->name }}</h3>
+<h3>{{ $client->surname }}</h3>
+<p>{{ $client->email }}</p>
+<p>{{ $client->address }}</p>
 <br>
-{{ $client->id }}
-<br>
-{{ $client->name }}
-<br>
-{{ $client->surname }}
-<br>
-{{ $client->email }}
-<br>
-{{ $client->address }}
-<br>
+
+@foreach($client->comments as $comment)
+    <div class="comment">
+        <h4> {{ $comment->author }} </h4>
+        <p> {{ $comment->body }} </p>
+    </div>
+@endforeach
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif 
+
+<form action="/comments/store" method="POST">
+    @csrf
+
+    <div class="form-input">
+        <input type="text" placeholder="Author name" name="author">
+    </div>
+    <div class="form-input">
+        <textarea name="body" placeholder="Comment body"></textarea>
+    </div>
+    <input type="hidden" value={{ $client->id }} name="commentable_id">
+    <input type="hidden" value={{ get_class($client) }} name="commentable_type">
+    <input type="submit">
+</form>
 
 <a href="{{ route('clients.index') }}">
     Back to index

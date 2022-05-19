@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +34,12 @@ Route::controller(ClientController::class)->group(function () {
     Route::get('/edit/{client}', 'edit')->name('clients.edit');
     Route::post('/edit/{client}', 'update');
     Route::get('/delete/{client}', 'destroy')->name('clients.delete');
+    });
+});
+
+Route::controller(CommentController::class)->group(function () {
+    Route::prefix('comments')->group(function () {
+        Route::post('/store', 'store')->name('comments.store');
     });
 });
 
