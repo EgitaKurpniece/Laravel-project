@@ -27,18 +27,13 @@ class ClientController extends Controller
         $validatedData = $storeClientRequest->validated();
 
         $client = new Client([
-        'name' => $validatedData['name'],
-        'surname' => $validatedData['surname'],
-        'email' => $validatedData['email'],
-        'address' => $validatedData['address'],
+            'name' => $validatedData['name'],
+            'surname' => $validatedData['surname'],
+            'email' => $validatedData['email'],
+            'address' => $validatedData['address'],
         ]);
 
         $client->save();
-        // $client->name = $requestData['name'];
-        // $client->surname = $requestData['surname'];
-        // $client->email = $requestData['email'];
-        // $client->address = $requestData['address'];
-       //  $client->save();
 
         return redirect()->route('clients.show', ['client' => $client]);
     }

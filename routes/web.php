@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,18 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [IndexController::class, 'index']);
+Route::get('/show/{post}', [IndexController::class, 'show']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [ClientController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('dashboard');
 
-Route::get('/client', [ClientController::class, 'index']);
+Route::get('/clients', [ClientController::class, 'index']);
 
 Route::controller(ClientController::class)->group(function () {
-    Route::prefix('client')->group(function () {
+    Route::prefix('clients')->group(function () {
     Route::get('/', 'index')->name('clients.index');
     Route::get('/create', 'create');
     Route::post('/create', 'store')->name('clients.create');
